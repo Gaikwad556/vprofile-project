@@ -70,18 +70,18 @@ pipeline {
             }
         }
 
-        stage("build docker image"){
-            steps{
-                script{
-                    dockerImage = docker.build("ssgaikwad/botss" + ":${BUILD_NUMBER}" , "./Docker-files/app/multistage/")
+        stage("Build Image docker") {
+            steps {
+                script {
+                    dockerImage = docker.build("regristryurl" + ":${BUILD_NUMBER}", "./Docker-files/app/multistage/")
                 }
             }
         }
-        stage("upload docker image "){
-            steps{
-                script{
-                    docker.withRegistry('',dockerred){
-                        dockerImage.push(":${BUILD_NUMBER}")
+        stage("Upload Image docker"){
+            steps {
+                script {
+                    docker.withRegistry('', dockerred){
+                        dockerImage.push("${BUILD_NUMBER}")
                         dockerImage.push("latest")
                     }
                 }
