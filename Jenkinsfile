@@ -72,14 +72,14 @@ pipeline {
 
         stage("build docker image"){
             steps{
-                stage{
+                script{
                     dockerImage = docker.build("ssgaikwad/bot1" + ":${BUILD_NUMBER}" , "./Docker-files/app/multistage/")
                 }
             }
         }
         stage("upload docker image "){
             steps{
-                stage{
+                script{
                     docker.withRegistry('',dockerhub){
                         dockerImage.push(":${BUILD_NUMBER}")
                         dockerImage.push("latest")
