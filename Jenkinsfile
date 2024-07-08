@@ -4,7 +4,18 @@ pipeline {
         jdk "jdk11"
         maven "mvn"
     }
+    environment {
+        awscredentials = "ecr:us-east-2:awscreds"
+        registryurl = "891377177922.dkr.ecr.us-east-2.amazonaws.com/myjenkinsapp"
+        vprofileurl = "https://891377177922.dkr.ecr.us-east-2.amazonaws.com"
+    }
+
     stages {
+        stage("Fetch code") {
+            steps {
+                git branch:"docker" , url:"https://github.com/hkhcoder/vprofile-project.git"
+            }
+        }
         stage("mvn test"){
             steps{
                 sh "mvn test"
@@ -39,6 +50,23 @@ pipeline {
                     // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
                     // true = set pipeline to UNSTABLE, false = don't
                     waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+        stage("Build Image"){
+            steps{
+                script{
+                    dockerImage = docker.build(vprofileurl, + ":${BUILD_NUMBER}", "./Docker-files/app/multistage/")
+                }
+            }
+        }
+        stage("Upload Image"){
+            steps{
+                script{
+                    docker.withRegistry(awscredentials , registryurl){
+                        dockerImage.push(":${BUILD_NUMBER}")
+                        dockerImage.push("latest")
+                    }
                 }
             }
         }
