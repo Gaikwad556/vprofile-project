@@ -8,7 +8,7 @@ pipeline {
         awscreds = "ecr:us-east-2:awscreds"
         regristryurl = "891377177922.dkr.ecr.us-east-2.amazonaws.com/myjenkinsapp"
         vprofileurl = "https://891377177922.dkr.ecr.us-east-2.amazonaws.com"
-        dockerred = "dockerhub"
+        dockercred = "dockerhub"
     }
     stages{
         stage("fetch code"){
@@ -80,7 +80,7 @@ pipeline {
         stage("Upload Image docker"){
             steps {
                 script {
-                    docker.withRegistry('', dockerred){
+                    docker.withRegistry('', dockercred){
                         dockerImage.push("${BUILD_NUMBER}")
                         dockerImage.push("latest")
                     }
