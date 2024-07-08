@@ -52,23 +52,23 @@ pipeline {
             }
         }
 
-        stage("Build Image") {
-            steps {
-                script {
-                    dockerImage = docker.build(regristryurl + ":${BUILD_NUMBER}", "./Docker-files/app/multistage/")
-                }
-            }
-        }
-        stage("Upload Image"){
-            steps {
-                script {
-                    docker.withRegistry(vprofileurl , awscreds){
-                        dockerImage.push("${BUILD_NUMBER}")
-                        dockerImage.push("latest")
-                    }
-                }
-            }
-        }
+        // stage("Build Image") {
+        //     steps {
+        //         script {
+        //             dockerImage = docker.build(regristryurl + ":${BUILD_NUMBER}", "./Docker-files/app/multistage/")
+        //         }
+        //     }
+        // }
+        // stage("Upload Image"){
+        //     steps {
+        //         script {
+        //             docker.withRegistry(vprofileurl , awscreds){
+        //                 dockerImage.push("${BUILD_NUMBER}")
+        //                 dockerImage.push("latest")
+        //             }
+        //         }
+        //     }
+        // }
 
         stage("Build Image docker") {
             steps {
