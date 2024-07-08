@@ -80,7 +80,7 @@ pipeline {
         stage("upload docker image "){
             steps{
                 script{
-                    docker.withRegistry('',dockerhub){
+                    docker.withRegistry('',dockerred){
                         dockerImage.push(":${BUILD_NUMBER}")
                         dockerImage.push("latest")
                     }
