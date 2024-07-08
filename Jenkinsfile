@@ -56,15 +56,15 @@ pipeline {
         stage("Build Image"){
             steps{
                 script{
-                    dockerImage = docker.build(vprofileurl, + ":${BUILD_NUMBER}", "./Docker-files/app/multistage/")
+                    dockerImage = docker.build(registryurl, + ":${BUILD_NUMBER}", "./Docker-files/app/multistage/")
                 }
             }
         }
         stage("Upload Image"){
             steps{
                 script{
-                    docker.withRegistry(awscredentials , registryurl){
-                        dockerImage.push(":${BUILD_NUMBER}")
+                    docker.withRegistry(awscredentials , vprofileurl){
+                        dockerImage.push("${BUILD_NUMBER}")
                         dockerImage.push("latest")
                     }
                 }
