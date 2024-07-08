@@ -73,7 +73,7 @@ pipeline {
         stage("build docker image"){
             steps{
                 script{
-                    dockerImage = docker.build("ssgaikwad/bot1" + ":${BUILD_NUMBER}" , "./Docker-files/app/multistage/")
+                    dockerImage = docker.build("ssgaikwad/botss" + ":${BUILD_NUMBER}" , "./Docker-files/app/multistage/")
                 }
             }
         }
